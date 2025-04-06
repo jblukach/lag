@@ -142,7 +142,7 @@ class LagRegion(Stack):
              self, 'hostzone',
              hosted_zone_id = hostzoneid.string_value,
              zone_name = '4n6ir.com'
-        ) 
+        )
 
     ### ACM CERTIFICATE ###
 
@@ -153,7 +153,7 @@ class LagRegion(Stack):
             subject_alternative_names = [
                 'ipv4.'+short+'.dev.4n6ir.com',
                 'ipv6.'+short+'.dev.4n6ir.com'
-            ],
+            ]
         )
 
         acmprod = _acm.Certificate(
@@ -163,7 +163,7 @@ class LagRegion(Stack):
             subject_alternative_names = [
                 'ipv4.'+short+'.lag.4n6ir.com',
                 'ipv6.'+short+'.lag.4n6ir.com'
-            ],
+            ]
         )
 
     ### DOMAIN NAMES ###
