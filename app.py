@@ -3,6 +3,7 @@ import os
 
 import aws_cdk as cdk
 
+from lag.lag_legacy import LagLegacy
 from lag.lag_region import LagRegion
 
 app = cdk.App()
@@ -133,6 +134,17 @@ LagRegion(
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'ap-southeast-5'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+LagLegacy(
+    app, 'LagLegacy-ap-southeast-7',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'ap-southeast-7'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
         qualifier = '4n6ir'
@@ -276,6 +288,17 @@ LagRegion(
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'me-south-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+LagLegacy(
+    app, 'LagLegacy-mx-central-1',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'mx-central-1'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
         qualifier = '4n6ir'
