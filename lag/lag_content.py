@@ -22,7 +22,7 @@ class LagContent(Stack):
 
         logs = _logs.LogGroup(
             self, 'logs',
-            log_group_name = '/aws/cloudfront',
+            log_group_name = '/aws/cloudfront/whoami',
             retention = _logs.RetentionDays.THIRTEEN_MONTHS,
             removal_policy = RemovalPolicy.DESTROY
         )
@@ -80,7 +80,7 @@ class LagContent(Stack):
                 function_associations = [
                     _cloudfront.FunctionAssociation(
                         function = function,
-                        event_type = _cloudfront.FunctionEventType.VIEWER_RESPONSE
+                        event_type = _cloudfront.FunctionEventType.VIEWER_REQUEST
                     )   
                 ]
             ),
