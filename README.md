@@ -1,8 +1,12 @@
 # lag
 
+### Command Line
+
 ```
 node scripts/laggy-ipv4-lag.js
 ```
+
+### Command Output
 
 ```
 https://ipv4.cac1.lag.4n6ir.com: 124.99 ms
