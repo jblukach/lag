@@ -60,7 +60,7 @@ class LagContent(Stack):
             validation = _acm.CertificateValidation.from_dns(hostzone)
         )
 
-    ### CLOUDFRONTS ###
+    ### CLOUDFRONT FUNCTIONS ###
 
         function = _cloudfront.Function(
             self, 'function',
@@ -69,6 +69,8 @@ class LagContent(Stack):
             ),
             runtime = _cloudfront.FunctionRuntime.JS_2_0
         )
+
+    ### CLOUDFRONT DISTRIBUTIONS ###
 
         distribution = _cloudfront.Distribution(
             self, 'distribution',

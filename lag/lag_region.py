@@ -214,6 +214,7 @@ class LagRegion(Stack):
 
         api4test = _api.HttpApi(
             self, 'api4test',
+            description = 'ipv4.'+short+'.dev.4n6ir.com',
             default_domain_mapping = _api.DomainMappingOptions(
                 domain_name = ipv4test
             )
@@ -229,6 +230,7 @@ class LagRegion(Stack):
 
         api4prod = _api.HttpApi(
             self, 'api4prod',
+            description = 'ipv4.'+short+'.lag.4n6ir.com',
             default_domain_mapping = _api.DomainMappingOptions(
                 domain_name = ipv4prod
             )
@@ -244,6 +246,7 @@ class LagRegion(Stack):
 
         api6test = _api.HttpApi(
             self, 'api6test',
+            description = 'ipv6.'+short+'.dev.4n6ir.com',
             default_domain_mapping = _api.DomainMappingOptions(
                 domain_name = ipv6test
             )
@@ -259,6 +262,7 @@ class LagRegion(Stack):
 
         api6prod = _api.HttpApi(
             self, 'api6prod',
+            description = 'ipv6.'+short+'.lag.4n6ir.com',
             default_domain_mapping = _api.DomainMappingOptions(
                 domain_name = ipv6prod
             )

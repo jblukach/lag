@@ -193,6 +193,7 @@ class LagLegacy(Stack):
 
         api4test = _api.RestApi(
             self, 'api4test',
+            description = 'ipv4.'+short+'.dev.4n6ir.com',
             endpoint_types = [
                 _api.EndpointType.REGIONAL
             ]
@@ -213,6 +214,7 @@ class LagLegacy(Stack):
 
         api4prod = _api.RestApi(
             self, 'api4prod',
+            description = 'ipv4.'+short+'.lag.4n6ir.com',
             endpoint_types = [
                 _api.EndpointType.REGIONAL
             ]
@@ -233,6 +235,7 @@ class LagLegacy(Stack):
 
         api6test = _api.RestApi(
             self, 'api6test',
+            description = 'ipv6.'+short+'.dev.4n6ir.com',
             endpoint_types = [
                 _api.EndpointType.REGIONAL
             ]
@@ -253,6 +256,7 @@ class LagLegacy(Stack):
 
         api6prod = _api.RestApi(
             self, 'api6prod',
+            description = 'ipv6.'+short+'.lag.4n6ir.com',
             endpoint_types = [
                 _api.EndpointType.REGIONAL
             ]
