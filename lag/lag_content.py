@@ -75,6 +75,7 @@ class LagContent(Stack):
             comment = 'whoami.4n6ir.com',
             default_behavior = _cloudfront.BehaviorOptions(
                 origin = _origins.S3BucketOrigin.with_origin_access_control(bucket),
+                viewer_protocol_policy = _cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
                 cache_policy = _cloudfront.CachePolicy.CACHING_DISABLED,
                 function_associations = [
                     _cloudfront.FunctionAssociation(
@@ -85,6 +86,13 @@ class LagContent(Stack):
             ),
             domain_names = [
                 'whoami.4n6ir.com'
+            ],
+            error_responses = [
+                _cloudfront.ErrorResponse(
+                    http_status = 404,
+                    response_http_status = 200,
+                    response_page_path = '/'
+                )
             ],
             minimum_protocol_version = _cloudfront.SecurityPolicyProtocol.TLS_V1_2_2021,
             price_class = _cloudfront.PriceClass.PRICE_CLASS_ALL,
