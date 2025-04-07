@@ -196,10 +196,7 @@ class LagLegacy(Stack):
             description = 'ipv4.'+short+'.dev.4n6ir.com',
             endpoint_types = [
                 _api.EndpointType.REGIONAL
-            ],
-            default_cors_preflight_options = _api.CorsOptions(
-                allow_origins = _api.Cors.ALL_ORIGINS
-            )
+            ]
         )
 
         api4test.root.add_method(
@@ -220,10 +217,7 @@ class LagLegacy(Stack):
             description = 'ipv4.'+short+'.lag.4n6ir.com',
             endpoint_types = [
                 _api.EndpointType.REGIONAL
-            ],
-            default_cors_preflight_options = _api.CorsOptions(
-                allow_origins = _api.Cors.ALL_ORIGINS
-            )
+            ]
         )
 
         api4prod.root.add_method(
@@ -244,10 +238,7 @@ class LagLegacy(Stack):
             description = 'ipv6.'+short+'.dev.4n6ir.com',
             endpoint_types = [
                 _api.EndpointType.REGIONAL
-            ],
-            default_cors_preflight_options = _api.CorsOptions(
-                allow_origins = _api.Cors.ALL_ORIGINS
-            )
+            ]
         )
 
         api6test.root.add_method(
@@ -268,10 +259,7 @@ class LagLegacy(Stack):
             description = 'ipv6.'+short+'.lag.4n6ir.com',
             endpoint_types = [
                 _api.EndpointType.REGIONAL
-            ],
-            default_cors_preflight_options = _api.CorsOptions(
-                allow_origins = _api.Cors.ALL_ORIGINS
-            )
+            ]
         )
 
         api6prod.root.add_method(
