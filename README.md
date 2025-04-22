@@ -6,6 +6,4 @@ The testing endpoint uses a regional HTTP API Gateway, except for Mexico (mx-cen
 
 The CloudFront configuration uses all edge locations, with a Function returning the source address from the closest geolocation.
 
-All three endpoints support IPv4 and IPv6 addresses, which Laggy uses to measure network latency and jitter between the source and AWS Cloud regions.
-
-https://github.com/jblukach/laggy
+All three endpoints support IPv4 and IPv6 addresses, which [Laggy](https://github.com/jblukach/laggy) uses to measure network latency and jitter between the source and AWS Cloud regions.
