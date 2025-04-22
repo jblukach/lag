@@ -1,6 +1,6 @@
 # lag
 
-Lag provides the global infrastructure to measure network latency between source and AWS Cloud regions.
+Lag provides the global infrastructure to measure network latency between the source and AWS Cloud regions.
 
 The testing endpoint uses a regional HTTP API Gateway, except for Mexico (mx-central-1) and Thailand (ap-southeast-7), where only a REST API Gateway is available, with a Lambda returning the results.
 
