@@ -249,7 +249,8 @@ class LagRegion(Stack):
             description = 'ipv6.'+short+'.dev.4n6ir.com',
             default_domain_mapping = _api.DomainMappingOptions(
                 domain_name = ipv6test
-            )
+            ),
+            ip_address_type = _api.IpAddressType.DUAL_STACK
         )
 
         api6test.add_routes(
@@ -265,7 +266,8 @@ class LagRegion(Stack):
             description = 'ipv6.'+short+'.lag.4n6ir.com',
             default_domain_mapping = _api.DomainMappingOptions(
                 domain_name = ipv6prod
-            )
+            ),
+            ip_address_type = _api.IpAddressType.DUAL_STACK
         )
 
         api6prod.add_routes(
