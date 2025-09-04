@@ -25,6 +25,10 @@ class LagLegacy(Stack):
             short = 'apse7'
         elif region == 'mx-central-1':
             short = 'mxc1'
+        elif region == 'ap-east-2':
+            short = 'ape2'
+        elif region == 'ap-southeast-6':
+            short = 'apse6'
         else:
             raise ValueError(f"Unsupported Region: {region}")
 

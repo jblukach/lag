@@ -42,6 +42,17 @@ LagRegion(
     )
 )
 
+LagLegacy(
+    app, 'LagLegacy-ap-east-2',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'ap-east-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
 LagRegion(
     app, 'LagRegion-ap-northeast-1',
     env = cdk.Environment(
@@ -146,6 +157,17 @@ LagRegion(
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'ap-southeast-5'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+LagLegacy(
+    app, 'LagLegacy-ap-southeast-6',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'ap-southeast-6'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
         qualifier = '4n6ir'

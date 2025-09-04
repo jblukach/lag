@@ -2,7 +2,7 @@
 
 Lag provides the global infrastructure to measure network latency between the source and AWS Cloud regions.
 
-The testing endpoint uses a regional HTTP API Gateway, except for Mexico (mx-central-1) and Thailand (ap-southeast-7), where only a REST API Gateway is available, with a Lambda returning the results.
+The testing endpoint uses a regional HTTP API Gateway, except for Mexico (mx-central-1), New Zealand (ap-southeast-6), Taipei (ap-east-2) and Thailand (ap-southeast-7), where only a REST API Gateway is available, with a Lambda returning the results.
 
 The CloudFront configuration uses all edge locations, with a Function returning the source address from the closest geolocation.
 
