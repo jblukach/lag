@@ -93,16 +93,6 @@ class LagLegacy(Stack):
 
     ### ACM CERTIFICATE ###
 
-        acmtest = _acm.Certificate(
-            self, 'acmtest',
-            domain_name = short+'.dev.4n6ir.com',
-            validation = _acm.CertificateValidation.from_dns(hostzone),
-            subject_alternative_names = [
-                'ipv4.'+short+'.dev.4n6ir.com',
-                'ipv6.'+short+'.dev.4n6ir.com'
-            ]
-        )
-
         acmprod = _acm.Certificate(
             self, 'acmprod',
             domain_name = short+'.lag.4n6ir.com',
@@ -115,22 +105,10 @@ class LagLegacy(Stack):
 
     ### DOMAIN NAMES ###
 
-        ipv4test = _api.DomainName(
-            self, 'ipv4test',
-            domain_name = 'ipv4.'+short+'.dev.4n6ir.com',
-            certificate = acmtest
-        )
-
         ipv4prod = _api.DomainName(
             self, 'ipv4prod',
             domain_name = 'ipv4.'+short+'.lag.4n6ir.com',
             certificate = acmprod
-        )
-
-        ipv6test = _api.DomainName(
-            self, 'ipv6test',
-            domain_name = 'ipv6.'+short+'.dev.4n6ir.com',
-            certificate = acmtest
         )
 
         ipv6prod = _api.DomainName(
@@ -141,33 +119,7 @@ class LagLegacy(Stack):
 
     ### API INTEGRATIONS ###
 
-        int4test = _api.LambdaIntegration(
-            region,
-            proxy = True, 
-            integration_responses = [
-                _api.IntegrationResponse(
-                    status_code = '200',
-                    response_parameters = {
-                        'method.response.header.Access-Control-Allow-Origin': "'*'"
-                    }
-                )
-            ]
-        )
-
         int4prod = _api.LambdaIntegration(
-            region,
-            proxy = True, 
-            integration_responses = [
-                _api.IntegrationResponse(
-                    status_code = '200',
-                    response_parameters = {
-                        'method.response.header.Access-Control-Allow-Origin': "'*'"
-                    }
-                )
-            ]
-        )
-
-        int6test = _api.LambdaIntegration(
             region,
             proxy = True, 
             integration_responses = [
@@ -195,27 +147,6 @@ class LagLegacy(Stack):
 
     ### API GATEWAYS ###
 
-        api4test = _api.RestApi(
-            self, 'api4test',
-            description = 'ipv4.'+short+'.dev.4n6ir.com',
-            endpoint_types = [
-                _api.EndpointType.REGIONAL
-            ]
-        )
-
-        api4test.root.add_method(
-            'GET',
-            int4test,
-            method_responses = [
-                _api.MethodResponse(
-                    status_code = '200',
-                    response_parameters = {
-                        'method.response.header.Access-Control-Allow-Origin': True
-                    }
-                )
-            ]
-        )
-
         api4prod = _api.RestApi(
             self, 'api4prod',
             description = 'ipv4.'+short+'.lag.4n6ir.com',
@@ -237,33 +168,15 @@ class LagLegacy(Stack):
             ]
         )
 
-        api6test = _api.RestApi(
-            self, 'api6test',
-            description = 'ipv6.'+short+'.dev.4n6ir.com',
-            endpoint_types = [
-                _api.EndpointType.REGIONAL
-            ]
-        )
-
-        api6test.root.add_method(
-            'GET',
-            int6test,
-            method_responses = [
-                _api.MethodResponse(
-                    status_code = '200',
-                    response_parameters = {
-                        'method.response.header.Access-Control-Allow-Origin': True
-                    }
-                )
-            ]
-        )
-
         api6prod = _api.RestApi(
             self, 'api6prod',
             description = 'ipv6.'+short+'.lag.4n6ir.com',
-            endpoint_types = [
-                _api.EndpointType.REGIONAL
-            ]
+            endpoint_configuration = _api.EndpointConfiguration(
+                types = [
+                    _api.EndpointType.REGIONAL
+                ],
+                ip_address_type = _api.IpAddressType.DUAL_STACK
+            )
         )
 
         api6prod.root.add_method(
@@ -281,22 +194,10 @@ class LagLegacy(Stack):
 
     ### BASE PATH MAPPINGS ###
 
-        base4test = _api.BasePathMapping(
-            self, 'base4test',
-            domain_name = ipv4test,
-            rest_api = api4test
-        )
-
         base4prod = _api.BasePathMapping(
             self, 'base4prod',
             domain_name = ipv4prod,
             rest_api = api4prod
-        )
-
-        base6test = _api.BasePathMapping(
-            self, 'base6test',
-            domain_name = ipv6test,
-            rest_api = api6test
         )
 
         base6prod = _api.BasePathMapping(
@@ -307,30 +208,12 @@ class LagLegacy(Stack):
 
     ### DNS RECORDS ###
 
-        dns4test = _route53.ARecord(
-            self, 'dns4test',
-            zone = hostzone,
-            record_name = 'ipv4.'+short+'.dev.4n6ir.com',
-            target = _route53.RecordTarget.from_alias(
-                _r53targets.ApiGatewayDomain(ipv4test)
-            )
-        )
-
         dns4prod = _route53.ARecord(
             self, 'dns4prod',
             zone = hostzone,
             record_name = 'ipv4.'+short+'.lag.4n6ir.com',
             target = _route53.RecordTarget.from_alias(
                 _r53targets.ApiGatewayDomain(ipv4prod)
-            )
-        )
-
-        dns6test = _route53.AaaaRecord(
-            self, 'dns6test',
-            zone = hostzone,
-            record_name = 'ipv6.'+short+'.dev.4n6ir.com',
-            target = _route53.RecordTarget.from_alias(
-                _r53targets.ApiGatewayDomain(ipv6test)
             )
         )
 

@@ -146,16 +146,6 @@ class LagRegion(Stack):
 
     ### ACM CERTIFICATE ###
 
-        acmtest = _acm.Certificate(
-            self, 'acmtest',
-            domain_name = short+'.dev.4n6ir.com',
-            validation = _acm.CertificateValidation.from_dns(hostzone),
-            subject_alternative_names = [
-                'ipv4.'+short+'.dev.4n6ir.com',
-                'ipv6.'+short+'.dev.4n6ir.com'
-            ]
-        )
-
         acmprod = _acm.Certificate(
             self, 'acmprod',
             domain_name = short+'.lag.4n6ir.com',
@@ -168,22 +158,10 @@ class LagRegion(Stack):
 
     ### DOMAIN NAMES ###
 
-        ipv4test = _api.DomainName(
-            self, 'ipv4test',
-            domain_name = 'ipv4.'+short+'.dev.4n6ir.com',
-            certificate = acmtest
-        )
-
         ipv4prod = _api.DomainName(
             self, 'ipv4prod',
             domain_name = 'ipv4.'+short+'.lag.4n6ir.com',
             certificate = acmprod
-        )
-
-        ipv6test = _api.DomainName(
-            self, 'ipv6test',
-            domain_name = 'ipv6.'+short+'.dev.4n6ir.com',
-            certificate = acmtest
         )
 
         ipv6prod = _api.DomainName(
@@ -194,16 +172,8 @@ class LagRegion(Stack):
 
     ### API INTEGRATIONS ###
 
-        int4test = _integrations.HttpLambdaIntegration(
-            'int4test', region
-        )
-
         int4prod = _integrations.HttpLambdaIntegration(
             'int4prod', region
-        )
-
-        int6test = _integrations.HttpLambdaIntegration(
-            'int6test', region
         )
 
         int6prod = _integrations.HttpLambdaIntegration(
@@ -211,22 +181,6 @@ class LagRegion(Stack):
         )
 
     ### API GATEWAYS ###
-
-        api4test = _api.HttpApi(
-            self, 'api4test',
-            description = 'ipv4.'+short+'.dev.4n6ir.com',
-            default_domain_mapping = _api.DomainMappingOptions(
-                domain_name = ipv4test
-            )
-        )
-
-        api4test.add_routes(
-            path = '/',
-            methods = [
-                _api.HttpMethod.GET
-            ],
-            integration = int4test
-        )
 
         api4prod = _api.HttpApi(
             self, 'api4prod',
@@ -242,23 +196,6 @@ class LagRegion(Stack):
                 _api.HttpMethod.GET
             ],
             integration = int4prod
-        )
-
-        api6test = _api.HttpApi(
-            self, 'api6test',
-            description = 'ipv6.'+short+'.dev.4n6ir.com',
-            default_domain_mapping = _api.DomainMappingOptions(
-                domain_name = ipv6test
-            ),
-            ip_address_type = _api.IpAddressType.DUAL_STACK
-        )
-
-        api6test.add_routes(
-            path = '/',
-            methods = [
-                _api.HttpMethod.GET
-            ],
-            integration = int6test
         )
 
         api6prod = _api.HttpApi(
@@ -280,18 +217,6 @@ class LagRegion(Stack):
 
     ### DNS RECORDS ###
 
-        dns4test = _route53.ARecord(
-            self, 'dns4test',
-            zone = hostzone,
-            record_name = 'ipv4.'+short+'.dev.4n6ir.com',
-            target = _route53.RecordTarget.from_alias(
-                _r53targets.ApiGatewayv2DomainProperties(
-                    ipv4test.regional_domain_name,
-                    ipv4test.regional_hosted_zone_id
-                )
-            )
-        )
-
         dns4prod = _route53.ARecord(
             self, 'dns4prod',
             zone = hostzone,
@@ -300,18 +225,6 @@ class LagRegion(Stack):
                 _r53targets.ApiGatewayv2DomainProperties(
                     ipv4prod.regional_domain_name,
                     ipv4prod.regional_hosted_zone_id
-                )
-            )
-        )
-
-        dns6test = _route53.AaaaRecord(
-            self, 'dns6test',
-            zone = hostzone,
-            record_name = 'ipv6.'+short+'.dev.4n6ir.com',
-            target = _route53.RecordTarget.from_alias(
-                _r53targets.ApiGatewayv2DomainProperties(
-                    ipv6test.regional_domain_name,
-                    ipv6test.regional_hosted_zone_id
                 )
             )
         )
