@@ -111,8 +111,8 @@ class LagOriginal(Stack):
 
         ipv6prod = _api.CfnDomainName(
             self, 'ipv6prod',
+            regional_certificate_arn = acmprod.certificate_arn,
             domain_name = 'ipv6.'+short+'.lag.4n6ir.com',
-            certificate_arn = acmprod.certificate_arn,
             endpoint_configuration = _api.CfnDomainName.EndpointConfigurationProperty(
                 ip_address_type = 'dualstack',
                 types = [
@@ -227,8 +227,8 @@ class LagOriginal(Stack):
             record_name = 'ipv6.'+short+'.lag.4n6ir.com',
             target = _route53.RecordTarget.from_alias(
                 _r53targets.ApiGatewayv2DomainProperties(
-                    ipv6prod.attr_distribution_domain_name,
-                    ipv6prod.attr_distribution_hosted_zone_id
+                    ipv6prod.attr_regional_domain_name,
+                    ipv6prod.attr_regional_hosted_zone_id
                 )
             )
         )

@@ -7,6 +7,7 @@ from lag.lag_content import LagContent
 from lag.lag_network import LagNetwork
 from lag.lag_original import LagOriginal
 from lag.lag_region import LagRegion
+from lag.lag_stack import LagStack
 
 app = cdk.App()
 
@@ -164,27 +165,27 @@ LagRegion(
     )
 )
 
-#LagOriginal(
-#    app, 'LagOriginal-ap-southeast-6',
-#    env = cdk.Environment(
-#        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-#        region = 'ap-southeast-6'
-#    ),
-#    synthesizer = cdk.DefaultStackSynthesizer(
-#        qualifier = '4n6ir'
-#    )
-#)
+LagOriginal(
+    app, 'LagOriginal-ap-southeast-6',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'ap-southeast-6'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
 
-#LagOriginal(
-#    app, 'LagOriginal-ap-southeast-7',
-#    env = cdk.Environment(
-#        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-#        region = 'ap-southeast-7'
-#    ),
-#    synthesizer = cdk.DefaultStackSynthesizer(
-#        qualifier = '4n6ir'
-#    )
-#)
+LagOriginal(
+    app, 'LagOriginal-ap-southeast-7',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'ap-southeast-7'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
 
 LagRegion(
     app, 'LagRegion-ca-central-1',
@@ -329,16 +330,16 @@ LagRegion(
     )
 )
 
-#LagOriginal(
-#    app, 'LagOriginal-mx-central-1',
-#    env = cdk.Environment(
-#        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
-#        region = 'mx-central-1'
-#    ),
-#    synthesizer = cdk.DefaultStackSynthesizer(
-#        qualifier = '4n6ir'
-#    )
-#)
+LagOriginal(
+    app, 'LagOriginal-mx-central-1',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'mx-central-1'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
 
 LagRegion(
     app, 'LagRegion-sa-east-1',
@@ -389,6 +390,17 @@ LagRegion(
     env = cdk.Environment(
         account = os.getenv('CDK_DEFAULT_ACCOUNT'),
         region = 'us-west-2'
+    ),
+    synthesizer = cdk.DefaultStackSynthesizer(
+        qualifier = '4n6ir'
+    )
+)
+
+LagStack(
+    app, 'LagStack',
+    env = cdk.Environment(
+        account = os.getenv('CDK_DEFAULT_ACCOUNT'),
+        region = 'us-east-1'
     ),
     synthesizer = cdk.DefaultStackSynthesizer(
         qualifier = '4n6ir'
