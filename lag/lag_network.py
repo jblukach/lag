@@ -14,21 +14,15 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class LagLegacy(Stack):
+class LagNetwork(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         region = Stack.of(self).region
 
-        if region == 'ap-southeast-7':
-            short = 'apse7'
-        elif region == 'mx-central-1':
-            short = 'mxc1'
-        elif region == 'ap-east-2':
+        if region == 'ap-east-2':
             short = 'ape2'
-        elif region == 'ap-southeast-6':
-            short = 'apse6'
         else:
             raise ValueError(f"Unsupported Region: {region}")
 
@@ -171,12 +165,9 @@ class LagLegacy(Stack):
         api6prod = _api.RestApi(
             self, 'api6prod',
             description = 'ipv6.'+short+'.lag.4n6ir.com',
-            endpoint_configuration = _api.EndpointConfiguration(
-                types = [
-                    _api.EndpointType.REGIONAL
-                ],
-                ip_address_type = _api.IpAddressType.DUAL_STACK
-            )
+            endpoint_types = [
+                _api.EndpointType.REGIONAL
+            ]
         )
 
         api6prod.root.add_method(
@@ -222,6 +213,6 @@ class LagLegacy(Stack):
             zone = hostzone,
             record_name = 'ipv6.'+short+'.lag.4n6ir.com',
             target = _route53.RecordTarget.from_alias(
-                _r53targets.ApiGatewayDomain(ipv6prod)
+                _r53targets.ApiGatewayDomain(ipv4prod)
             )
         )

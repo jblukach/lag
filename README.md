@@ -43,7 +43,7 @@
 |:---:|:---:|:---:|:---:|
 |https://ipv6.afs1.lag.4n6ir.com|af-south-1|Cape Town|Africa|
 |https://ipv6.ape1.lag.4n6ir.com|ap-east-1|Hong Kong|Asia Pacific|
-|https://ipv6.ape2.lag.4n6ir.com|ap-east-2|Taipei|Asia Pacific|
+|https://ipv6.ape2.lag.4n6ir.com|ap-east-2|Taipei|Asia Pacific **++**|
 |https://ipv6.apne1.lag.4n6ir.com|ap-northeast-1|Tokyo|Asia Pacific|
 |https://ipv6.apne2.lag.4n6ir.com|ap-northeast-2|Seoul|Asia Pacific|
 |https://ipv6.apne3.lag.4n6ir.com|ap-northeast-3|Osaka|Asia Pacific|
@@ -75,3 +75,5 @@
 |https://ipv6.use2.lag.4n6ir.com|us-east-2|Ohio|United States|
 |https://ipv6.usw1.lag.4n6ir.com|us-west-1|N. California|United States|
 |https://ipv6.usw2.lag.4n6ir.com|us-west-2|Oregon|United States|
+
+**++** No IPv6 Support

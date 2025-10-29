@@ -2,8 +2,7 @@ from aws_cdk import (
     Duration,
     RemovalPolicy,
     Stack,
-    aws_apigatewayv2 as _api,
-    aws_apigatewayv2_integrations as _integrations,
+    aws_apigateway as _api,
     aws_certificatemanager as _acm,
     aws_iam as _iam,
     aws_lambda as _lambda,
@@ -15,73 +14,19 @@ from aws_cdk import (
 
 from constructs import Construct
 
-class LagRegion(Stack):
+class LagOriginal(Stack):
 
     def __init__(self, scope: Construct, construct_id: str, **kwargs) -> None:
         super().__init__(scope, construct_id, **kwargs)
 
         region = Stack.of(self).region
 
-        if region == 'af-south-1':
-            short = 'afs1'
-        elif region == 'ap-east-1':
-            short = 'ape1'
-        elif region == 'ap-northeast-1':
-            short = 'apne1'
-        elif region == 'ap-northeast-2':
-            short = 'apne2'
-        elif region == 'ap-northeast-3':
-            short = 'apne3'
-        elif region == 'ap-south-1':
-            short = 'aps1'
-        elif region == 'ap-south-2':
-            short = 'aps2'
-        elif region == 'ap-southeast-1':
-            short = 'apse1'
-        elif region == 'ap-southeast-2':
-            short = 'apse2'
-        elif region == 'ap-southeast-3':
-            short = 'apse3'
-        elif region == 'ap-southeast-4':
-            short = 'apse4'
-        elif region == 'ap-southeast-5':
-            short = 'apse5'
-        elif region == 'ca-central-1':
-            short = 'cac1'
-        elif region == 'ca-west-1':
-            short = 'caw1'
-        elif region == 'eu-central-1':
-            short = 'euc1'
-        elif region == 'eu-central-2':
-            short = 'euc2'
-        elif region == 'eu-north-1':
-            short = 'eun1'
-        elif region == 'eu-south-1':
-            short = 'eus1'
-        elif region == 'eu-south-2':
-            short = 'eus2'
-        elif region == 'eu-west-1':
-            short = 'euw1'
-        elif region == 'eu-west-2':
-            short = 'euw2'
-        elif region == 'eu-west-3':
-            short = 'euw3'
-        elif region == 'il-central-1':
-            short = 'ilc1'
-        elif region == 'me-central-1':
-            short = 'mec1'
-        elif region == 'me-south-1':
-            short = 'mes1'
-        elif region == 'sa-east-1':
-            short = 'sae1'
-        elif region == 'us-east-1':
-            short = 'use1'
-        elif region == 'us-east-2':
-            short = 'use2'
-        elif region == 'us-west-1':
-            short = 'usw1'
-        elif region == 'us-west-2':
-            short = 'usw2'
+        if region == 'ap-southeast-7':
+            short = 'apse7'
+        elif region == 'mx-central-1':
+            short = 'mxc1'
+        elif region == 'ap-southeast-6':
+            short = 'apse6'
         else:
             raise ValueError(f"Unsupported Region: {region}")
 
@@ -142,7 +87,7 @@ class LagRegion(Stack):
              self, 'hostzone',
              hosted_zone_id = hostzoneid.string_value,
              zone_name = '4n6ir.com'
-        )
+        ) 
 
     ### ACM CERTIFICATE ###
 
@@ -164,57 +109,105 @@ class LagRegion(Stack):
             certificate = acmprod
         )
 
-        ipv6prod = _api.DomainName(
+        ipv6prod = _api.CfnDomainName(
             self, 'ipv6prod',
             domain_name = 'ipv6.'+short+'.lag.4n6ir.com',
-            certificate = acmprod,
-            endpoint_type = _api.EndpointType.REGIONAL,
-            ip_address_type = _api.IpAddressType.DUAL_STACK
+            certificate_arn = acmprod.certificate_arn,
+            endpoint_configuration = _api.CfnDomainName.EndpointConfigurationProperty(
+                ip_address_type = 'dualstack',
+                types = [
+                    'REGIONAL'
+                ]
+            )
         )
 
     ### API INTEGRATIONS ###
 
-        int4prod = _integrations.HttpLambdaIntegration(
-            'int4prod', region
+        int4prod = _api.LambdaIntegration(
+            region,
+            proxy = True, 
+            integration_responses = [
+                _api.IntegrationResponse(
+                    status_code = '200',
+                    response_parameters = {
+                        'method.response.header.Access-Control-Allow-Origin': "'*'"
+                    }
+                )
+            ]
         )
 
-        int6prod = _integrations.HttpLambdaIntegration(
-            'int6prod', region
+        int6prod = _api.LambdaIntegration(
+            region,
+            proxy = True, 
+            integration_responses = [
+                _api.IntegrationResponse(
+                    status_code = '200',
+                    response_parameters = {
+                        'method.response.header.Access-Control-Allow-Origin': "'*'"
+                    }
+                )
+            ]
         )
 
     ### API GATEWAYS ###
 
-        api4prod = _api.HttpApi(
+        api4prod = _api.RestApi(
             self, 'api4prod',
             description = 'ipv4.'+short+'.lag.4n6ir.com',
-            default_domain_mapping = _api.DomainMappingOptions(
-                domain_name = ipv4prod
+            endpoint_types = [
+                _api.EndpointType.REGIONAL
+            ]
+        )
+
+        api4prod.root.add_method(
+            'GET',
+            int4prod,
+            method_responses = [
+                _api.MethodResponse(
+                    status_code = '200',
+                    response_parameters = {
+                        'method.response.header.Access-Control-Allow-Origin': True
+                    }
+                )
+            ]
+        )
+
+        api6prod = _api.RestApi(
+            self, 'api6prod',
+            description = 'ipv6.'+short+'.lag.4n6ir.com',
+            endpoint_configuration = _api.EndpointConfiguration(
+                types = [
+                    _api.EndpointType.REGIONAL
+                ],
+                ip_address_type = _api.IpAddressType.DUAL_STACK
             )
         )
 
-        api4prod.add_routes(
-            path = '/',
-            methods = [
-                _api.HttpMethod.GET
-            ],
-            integration = int4prod
+        api6prod.root.add_method(
+            'GET',
+            int6prod,
+            method_responses = [
+                _api.MethodResponse(
+                    status_code = '200',
+                    response_parameters = {
+                        'method.response.header.Access-Control-Allow-Origin': True
+                    }
+                )
+            ]
         )
 
-        api6prod = _api.HttpApi(
-            self, 'api6prod',
-            description = 'ipv6.'+short+'.lag.4n6ir.com',
-            default_domain_mapping = _api.DomainMappingOptions(
-                domain_name = ipv6prod
-            ),
-            ip_address_type = _api.IpAddressType.DUAL_STACK
+    ### BASE PATH MAPPINGS ###
+
+        base4prod = _api.BasePathMapping(
+            self, 'base4prod',
+            domain_name = ipv4prod,
+            rest_api = api4prod
         )
 
-        api6prod.add_routes(
-            path = '/',
-            methods = [
-                _api.HttpMethod.GET
-            ],
-            integration = int6prod
+        base6prod = _api.BasePathMapping(
+            self, 'base6prod',
+            domain_name = ipv6prod,
+            rest_api = api6prod
         )
 
     ### DNS RECORDS ###
@@ -224,10 +217,7 @@ class LagRegion(Stack):
             zone = hostzone,
             record_name = 'ipv4.'+short+'.lag.4n6ir.com',
             target = _route53.RecordTarget.from_alias(
-                _r53targets.ApiGatewayv2DomainProperties(
-                    ipv4prod.regional_domain_name,
-                    ipv4prod.regional_hosted_zone_id
-                )
+                _r53targets.ApiGatewayDomain(ipv4prod)
             )
         )
 
@@ -237,8 +227,8 @@ class LagRegion(Stack):
             record_name = 'ipv6.'+short+'.lag.4n6ir.com',
             target = _route53.RecordTarget.from_alias(
                 _r53targets.ApiGatewayv2DomainProperties(
-                    ipv6prod.regional_domain_name,
-                    ipv6prod.regional_hosted_zone_id
+                    ipv6prod.attr_distribution_domain_name,
+                    ipv6prod.attr_distribution_hosted_zone_id
                 )
             )
         )
